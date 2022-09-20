@@ -18,3 +18,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 # RUN apt-get update && curl -ssL https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/common-debian.sh -o /tmp/common-script.sh \
 #     && /bin/bash /tmp/common-script.sh "$INSTALL_ZSH" "$USERNAME" "$USER_UID" "$USER_GID" \
 #     && rm /tmp/common-script.sh
+
+RUN dotnet new --install Microsoft.Azure.WebJobs.ProjectTemplates && dotnet new --install Microsoft.Azure.WebJobs.ItemTemplates
+#RUN dotnet new func --language F# --name Samples
