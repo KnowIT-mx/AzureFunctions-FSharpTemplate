@@ -3,7 +3,7 @@
     "ms-dotnettools.csharp",
     "Ionide.Ionide-fsharp",
     "ms-azuretools.vscode-azurefunctions",
-    "azuretools.vscode-azurestorage",
+    "ms-azuretools.vscode-azurestorage",
     "azurite.azurite"
   ]
 }
