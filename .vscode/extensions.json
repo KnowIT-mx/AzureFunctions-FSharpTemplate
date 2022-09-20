@@ -1,8 +1,8 @@
 {
   "recommendations": [
-    "ms-dotnettools.csharp",
-    "Ionide.Ionide-fsharp",
     "ms-azuretools.vscode-azurefunctions",
+    "ms-dotnettools.csharp",
+    "ionide.ionide-fsharp",
     "ms-azuretools.vscode-azurestorage",
     "azurite.azurite"
   ]
