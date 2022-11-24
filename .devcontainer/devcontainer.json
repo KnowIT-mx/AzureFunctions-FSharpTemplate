@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/azure-functions-dotnet-6-inprocess
 {
-	"name": "Azure Functions .net6 (In-Process)",
+	"name": "Azure Functions .NET 6 (In-Process)",
 	"dockerFile": "Dockerfile",
 	"forwardPorts": [ 7071 ],
 
@@ -13,15 +13,18 @@
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"Ionide.Ionide-fsharp",
-				"ms-azuretools.vscode-azurefunctions"
+				"ms-azuretools.vscode-azurefunctions",
+				"azurite.azurite"
 			]
 		}
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "dotnet new --install Microsoft.Azure.WebJobs.ProjectTemplates && dotnet new --install Microsoft.Azure.WebJobs.ItemTemplates",
-
+	"postCreateCommand": "dotnet restore && dotnet new --install Microsoft.Azure.WebJobs.ProjectTemplates && dotnet new --install Microsoft.Azure.WebJobs.ItemTemplates",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"remoteEnv": {
+		"DOTNET_NEW_PREFERRED_LANG": "F#"
+	}
 }
