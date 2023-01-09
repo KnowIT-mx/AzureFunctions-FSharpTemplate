@@ -8,6 +8,7 @@ open Microsoft.Azure.WebJobs.Extensions.Http
 open Microsoft.AspNetCore.Http
 open System.Text.Json
 open Microsoft.Extensions.Logging
+open KnowIT.AzFunctions.Helpers
 
 module HttpTrigger =
     // Define a record to deserialize body data into.
@@ -19,29 +20,28 @@ module HttpTrigger =
     let Name = "name"
 
     [<FunctionName("HttpTrigger")>]
-    let run ([<HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)>]req: HttpRequest) (log: ILogger) =
+    let run([<HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)>]httpRequest: HttpRequest, log: ILogger) =
         task {
             log.LogInformation("F# HTTP trigger function processed a request.")
 
-            let nameOpt =
-                if req.Query.ContainsKey(Name) then
-                    Some(req.Query.[Name].[0])
-                else
-                    None
+            let nameValues =
+                httpRequest
+                |> HttpRequest.tryQueryOrHeaderValues Name
 
-            use stream = new StreamReader(req.Body)
-            let! reqBody = stream.ReadToEndAsync() //|> Async.AwaitTask
+            let! requestBody =
+                use stream = new StreamReader(httpRequest.Body)
+                stream.ReadToEndAsync()
 
             let data =
                 try
-                    JsonSerializer.Deserialize<NameContainer>(reqBody,
+                    JsonSerializer.Deserialize<NameContainer>(requestBody,
                         JsonSerializerOptions(PropertyNameCaseInsensitive = true))
                 with
                 | _ -> { Name = "" }
 
             let name =
-                match nameOpt with
-                | Some n -> n
+                match nameValues with
+                | Some ns -> ns[0]
                 | None -> data.Name
 
             let responseMessage =
@@ -51,7 +51,7 @@ module HttpTrigger =
 
                 else
                     {| Result = "Success"
-                       Message = "Hello, " +  name + ". This HTTP triggered function executed successfully." |}
+                       Message = $"Hello, {name}. This HTTP triggered function executed successfully." |}
 
             return OkObjectResult(responseMessage)
         }
