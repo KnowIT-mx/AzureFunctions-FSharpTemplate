@@ -3,7 +3,6 @@
 {
 	"name": "Azure Functions .NET 6 (In-Process)",
 	"dockerFile": "Dockerfile",
-	"forwardPorts": [ 7071 ],
 
 	// Configure tool-specific properties.
 	"customizations": {
@@ -20,7 +19,10 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "dotnet restore && dotnet new --install Microsoft.Azure.WebJobs.ProjectTemplates && dotnet new --install Microsoft.Azure.WebJobs.ItemTemplates",
+	"postCreateCommand": {
+		"restore": "dotnet restore",
+		"templates": "dotnet new --install Microsoft.Azure.WebJobs.ProjectTemplates && dotnet new --install Microsoft.Azure.WebJobs.ItemTemplates"
+	},
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
